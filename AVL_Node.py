@@ -4,6 +4,10 @@ def reset_nb_rot():
     global NB_ROT
     NB_ROT = 0
 
+def increment_nb_rot():
+    global NB_ROT
+    NB_ROT += 1
+
 class AVL_Node:
     def __init__(self, value):
         self._value = value
@@ -11,9 +15,13 @@ class AVL_Node:
         self._right = None
         self._balance = 0
 
-    def insert(self, val):
-        new_root = self
-        delt_height = 0
+
+    def insert(self, val) -> 'AVL_Node':
+        return self.insert_aux(val)[0]
+
+    def insert_aux(self, val) -> ('AVL_Node', 'int'):
+        new_root: 'AVL_Node' = self
+        delt_height: 'int' = 0
 
         #------------------- Partie insertion -------------------- /
 
@@ -21,10 +29,6 @@ class AVL_Node:
             self._value = AVL_Node(val)
 
         if val < self._value:
-            if self._left is None and self._right is None:
-                delt_height += 1
-            
-            balance = self._balance + delt_height
             new_root = self
             if self._left is not None:
                 self._left = self._left.insert(val)
@@ -32,10 +36,6 @@ class AVL_Node:
                 self._left = AVL_Node(val)
 
         elif val > self._value:
-            if self._left is None and self._right is None:
-                delt_height += 1
-
-            balance = self._balance - delt_height
             new_root = self
             if self._right is not None:
                 self._right = self._right.insert(val)
@@ -43,7 +43,50 @@ class AVL_Node:
                 self._right = AVL_Node(val)
 
         else:
-            print("error insert")
+            print("error insert car :", val, "est déjà dans l'arbe.")
+
+        self.check_balance() # calcul de la balance
+
+        return (new_root, delt_height)
+
+
+    def height(self) -> 'int':
+        left_height = 0
+        if self._left:
+            left_height = self._left.height()
+
+        right_height = 0
+        if self._right:
+            right_height = self._right.height()
+        return 1 + max(left_height, right_height)
+
+
+    def check_balance(self) -> 'void':
+        left_height: 'int' = 0
+        if self._left:
+            left_height = self._left.height()
+
+        right_height: 'int' = 0
+        if self._right:
+            right_height = self._right.height()
+
+        self._balance = left_height - right_height
+
+    def rot_left(self) -> 'AVL_Node':
+        temp = self._right._left
+        new_root = self._right
+        new_root._left = self
+        self._right = temp
+        increment_nb_rot()
 
         return new_root
 
+
+    def rot_right(self) -> 'AVL_Node':
+        temp = self._left._right
+        new_root = self._left
+        new_root._right = self
+        self._left = temp
+        increment_nb_rot()
+
+        return new_root
