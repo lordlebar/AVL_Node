@@ -47,15 +47,32 @@ class AVL_Node:
 
         self.check_balance() # calcul de la balance
 
+        # --------------------- Partie Rotation --------------------- /
+
+        if self._balance > 1 and val < self._left._value:  # Rotation a droite
+            delt_height = 0
+            return (self.rot_right(), delt_height)
+        elif self._balance < -1 and val > self._right._value:  # Rotation a gauche
+            delt_height = 0
+            return (self.rot_left(), delt_height)
+        elif self._balance > 1 and val > self._left._value: # Rotation du fils gauche a droite puis rotation du parent du fils gauche a droite
+            delt_height = 0
+            self._left = self._left.rot_left()
+            return (self.rot_right(), delt_height)
+        elif self._balance < 1 and val < self._right._value: # Rotation du fils droit a gauche puis rotation du parent du fils droit a gauche
+            delt_height = 0
+            self._right = self._right.rot_right()
+            return (self.rot_left(), delt_height)
+
         return (new_root, delt_height)
 
 
     def height(self) -> 'int':
-        left_height = 0
+        left_height: 'int' = 0
         if self._left:
             left_height = self._left.height()
 
-        right_height = 0
+        right_height: 'int' = 0
         if self._right:
             right_height = self._right.height()
         return 1 + max(left_height, right_height)
@@ -73,20 +90,30 @@ class AVL_Node:
         self._balance = left_height - right_height
 
     def rot_left(self) -> 'AVL_Node':
-        temp = self._right._left
-        new_root = self._right
+        new_root = self
+        temp = self
+        if self._right is not None:
+            if self._right._left is not None:
+                temp: 'AVL_Node' = self._right._left
+            new_root: 'AVL_Node' = self._right
+            self._right = temp
+
         new_root._left = self
-        self._right = temp
         increment_nb_rot()
 
         return new_root
 
 
     def rot_right(self) -> 'AVL_Node':
-        temp = self._left._right
-        new_root = self._left
+        new_root = self
+        temp = self
+        if self._left is not None:
+            if self._left._right is not None:
+                temp: 'AVL_Node' = self._left._right
+            new_root: 'AVL_Node' = self._left
+            self._left = temp
+
         new_root._right = self
-        self._left = temp
         increment_nb_rot()
 
         return new_root
