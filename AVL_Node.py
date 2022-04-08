@@ -45,21 +45,22 @@ class AVL_Node:
         else:
             print("error insert car :", val, "est déjà dans l'arbe.")
 
-        self.check_balance() # calcul de la balance
+        self.set_balance()  # calcul de la balance
+        print(self._balance)
 
         # --------------------- Partie Rotation --------------------- /
-
         if self._balance > 1 and val < self._left._value:  # Rotation a droite
             delt_height = 0
             return (self.rot_right(), delt_height)
+
         elif self._balance < -1 and val > self._right._value:  # Rotation a gauche
             delt_height = 0
             return (self.rot_left(), delt_height)
-        elif self._balance > 1 and val > self._left._value: # Rotation du fils gauche a droite puis rotation du parent du fils gauche a droite
+        elif self._balance > 1 and val > self._left._value:
             delt_height = 0
             self._left = self._left.rot_left()
             return (self.rot_right(), delt_height)
-        elif self._balance < 1 and val < self._right._value: # Rotation du fils droit a gauche puis rotation du parent du fils droit a gauche
+        elif self._balance < -1 and val < self._right._value:
             delt_height = 0
             self._right = self._right.rot_right()
             return (self.rot_left(), delt_height)
@@ -78,7 +79,7 @@ class AVL_Node:
         return 1 + max(left_height, right_height)
 
 
-    def check_balance(self) -> 'void':
+    def set_balance(self) -> 'void':
         left_height: 'int' = 0
         if self._left:
             left_height = self._left.height()
@@ -89,6 +90,7 @@ class AVL_Node:
 
         self._balance = left_height - right_height
 
+
     def rot_left(self) -> 'AVL_Node':
         new_root = self
         temp = self
@@ -98,6 +100,7 @@ class AVL_Node:
             new_root: 'AVL_Node' = self._right
             self._right = temp
 
+        self._balance = 0
         new_root._left = self
         increment_nb_rot()
 
@@ -113,6 +116,7 @@ class AVL_Node:
             new_root: 'AVL_Node' = self._left
             self._left = temp
 
+        self._balance = 0
         new_root._right = self
         increment_nb_rot()
 
