@@ -68,7 +68,10 @@ class TestBST(unittest.TestCase):
         self.assertEqual(-1, bst._right._balance)
         self.assertEqual(-1, bst._right._right._balance)
         self.assertEqual(0,  bst._right._right._right._balance)
-        print("passed insert")
+
+        print("Tree :", end=" ")
+        bst.printTree()
+        print("\npassed insert")
 
     def test_insert_values_already_in_AVL(self):
         bst: AVL_Node = AVL_Node(42)
@@ -173,7 +176,7 @@ class TestBST(unittest.TestCase):
             print("Votre code a effectué :", ficAvlNode.NB_ROT, "rotations")
             print("L'auteur de la test suite a fait", rot, "rotations\n\n")
 
-        print("passed test_rot_right")
+        print( "\n" + "passed test_rot_right")
 
     def test_balance_without_upt_1(self):
         bst: AVL_Node = AVL_Node(6)
