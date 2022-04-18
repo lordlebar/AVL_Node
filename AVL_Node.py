@@ -68,6 +68,9 @@ class AVL_Node:
             delt_height = 0
             self._right = self._right.rot_right()
             return self.rot_left(), delt_height
+
+        self.set_balance()
+
         return new_root, delt_height
 
 
@@ -82,7 +85,7 @@ class AVL_Node:
         return 1 + max(left_height, right_height)
 
 
-    def set_balance(self) -> 'void':
+    def set_balance(self) -> 'Void':
         left_height: 'int' = 0
         if self._left:
             left_height = self._left.height()
@@ -95,14 +98,15 @@ class AVL_Node:
 
 
     def rot_left(self) -> 'AVL_Node':
-        new_root = self
-        temp = self
+        new_root: 'AVL_Node' = self
+        temp: 'AVL_Node' = self
         if self._right is not None:
             if self._right._left is not None:
-                temp: 'AVL_Node' = self._right._left
-            new_root: 'AVL_Node' = self._right
+                temp = self._right._left
+            new_root = self._right
             self._right = temp
 
+        new_root._balance = 0
         self._balance = 0
         new_root._left = self
         increment_nb_rot()
@@ -119,6 +123,7 @@ class AVL_Node:
             new_root: 'AVL_Node' = self._left
             self._left = temp
 
+        new_root._balance = 0
         self._balance = 0
         new_root._right = self
         increment_nb_rot()
