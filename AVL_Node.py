@@ -60,11 +60,11 @@ class AVL_Node:
         elif self._balance < -1 and val > self._right._value:  # Rotation a gauche
             delt_height = 0
             return self.rot_left(), delt_height
-        elif self._balance > 1 and val > self._left._value:
+        elif self._balance > 1 and val > self._left._value:  # Rotation fils gauche a gauche puis rotation self a droite
             delt_height = 0
             self._left = self._left.rot_left()
             return self.rot_right(), delt_height
-        elif self._balance < -1 and val < self._right._value:
+        elif self._balance < -1 and val < self._right._value:  # Rotation fils droit a droite puis rotation self a gauche
             delt_height = 0
             self._right = self._right.rot_right()
             return self.rot_left(), delt_height
@@ -98,36 +98,21 @@ class AVL_Node:
 
 
     def rot_left(self) -> 'AVL_Node':
-        new_root: 'AVL_Node' = self
-        temp: 'AVL_Node' = self
-        if self._right is not None:
-            if self._right._left is not None:
-                temp = self._right._left
-            new_root = self._right
-            self._right = temp
-
-        new_root._balance = 0
-        self._balance = 0
+        new_root: 'AVL_Node' = self._right
+        self._right = new_root._left
         new_root._left = self
+        new_root._balance = 0
+        self.set_balance()
         increment_nb_rot()
-
         return new_root
 
-
     def rot_right(self) -> 'AVL_Node':
-        new_root = self
-        temp = self
-        if self._left is not None:
-            if self._left._right is not None:
-                temp: 'AVL_Node' = self._left._right
-            new_root: 'AVL_Node' = self._left
-            self._left = temp
-
-        new_root._balance = 0
-        self._balance = 0
+        new_root: 'AVL_Node' = self._left
+        self._left = new_root._right
         new_root._right = self
+        new_root._balance = 0
+        self.set_balance()
         increment_nb_rot()
-
         return new_root
 
     def delete(self, val) -> 'AVL_Node':
@@ -157,7 +142,7 @@ class AVL_Node:
 
         return new_root, delt_height
 
-    def print(self) -> 'Void':
+    def print(self) -> 'void':
         if self._left:
             self._left.print()
         print(self._value, end=" ")

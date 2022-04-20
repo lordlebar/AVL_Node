@@ -70,7 +70,7 @@ class TestBST(unittest.TestCase):
         self.assertEqual(0,  bst._right._right._right._balance)
 
         print("Tree :", end=" ")
-        bst.printTree()
+        bst.print()
         print("\npassed insert")
 
     def test_insert_values_already_in_AVL(self):
