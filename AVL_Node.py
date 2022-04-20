@@ -69,8 +69,6 @@ class AVL_Node:
             self._right = self._right.rot_right()
             return self.rot_left(), delt_height
 
-        self.set_balance()
-
         return new_root, delt_height
 
 
@@ -131,7 +129,7 @@ class AVL_Node:
                 else:
                     self._left = self._left.delete(val)
 
-        if val > self._value:
+        elif val > self._value:
             if self._right is not None:
                 if self._right._value == val:
                     self._right = None
@@ -140,7 +138,14 @@ class AVL_Node:
                 else:
                     self._right = self._right.delete(val)
 
+        elif val == self._value:
+            if not self._left:
+                return self._right, self.height()
+            if not self._right:
+                return self._left, self.height()
+
         return new_root, delt_height
+
 
     def print(self) -> 'void':
         if self._left:
