@@ -116,7 +116,14 @@ class AVL_Node:
         increment_nb_rot()
         return new_root
 
+# min valuie in avkl tree
+    def min_value(self) -> 'AVL_Node':
+        if self._left is None:
+            return self
+        return self._left.min_value()
 
+
+# delete node in avl tree 
     def delete(self, val) -> 'AVL_Node':
         return self.delete_aux(val)[0]
 
@@ -137,8 +144,8 @@ class AVL_Node:
                 print("error delete car :", val, "n'est pas dans l'arbre.")
         else:
             if self._left is not None and self._right is not None:
-                self._value = self._left._right._value
-                self._left._right = self._left._right.delete(self._value)
+                self._value = self._right.min_value()._value
+                self._right = self._right.delete(self._value)
             elif self._left is not None:
                 new_root = self._left
                 delt_height = 0
@@ -172,6 +179,7 @@ class AVL_Node:
             return self.rot_left(), delt_height
 
         return new_root, delt_height
+
 
     # print alv tree with level
     def print_tree_with_level(self, level: 'int' = 0) -> _void:

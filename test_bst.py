@@ -401,27 +401,27 @@ class TestBST(unittest.TestCase):
         bst = bst.insert(80)
         bst = bst.insert(30)
         bst = bst.insert(10)
-        bst.print_tree_with_level(42)
+        bst.print_tree_with_level()
 
         bst = bst.delete(42)
-        bst.print_tree_with_level(30)
+        bst.print_tree_with_level()
 
 
-        self.assertEqual(30,   bst._value)
+        # self.assertEqual(30,   bst._value)
+        # self.assertEqual(69,   bst._right._value)
+        # self.assertEqual(53,   bst._right._left._value)
+        # self.assertEqual(80,   bst._right._right._value)
+        # self.assertEqual(20,   bst._left._value)
+        # self.assertEqual(None, bst._left._right)
+        # self.assertEqual(10,   bst._left._left._value)
+        
+        self.assertEqual(53,   bst._value)
         self.assertEqual(69,   bst._right._value)
-        self.assertEqual(53,   bst._right._left._value)
+        self.assertEqual(None, bst._right._left)
         self.assertEqual(80,   bst._right._right._value)
         self.assertEqual(20,   bst._left._value)
-        self.assertEqual(None, bst._left._right)
+        self.assertEqual(30,   bst._left._right._value)
         self.assertEqual(10,   bst._left._left._value)
-        
-           # self.assertEqual(53,   bst._value)
-            #self.assertEqual(69,   bst._right._value)
-            #self.assertEqual(None, bst._right._left)
-            #self.assertEqual(80,   bst._right._right._value)
-            #self.assertEqual(20,   bst._left._value)
-           # self.assertEqual(30,   bst._left._right._value)
-           #self.assertEqual(10,   bst._left._left._value)
         
         print("test_remove_head_without_upt_bl passed\n\n")
 
